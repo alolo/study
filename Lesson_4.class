@@ -1,0 +1,92 @@
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by Fernflower decompiler)
+//
+
+import java.io.PrintStream;
+
+public class Lesson_4 {
+    public static void main(String[] args) {
+        Dog dog = new Dog("Шарик");
+        Cat cat1 = new Cat("Снежок");
+        Cat cat2 = new Cat("Алиса");
+        System.out.println("Собака " + dog.getName() + " ");
+        dog.run(300);
+        dog.run(600);
+        dog.swim(5);
+        dog.swim(15);
+        System.out.println("\nКот " + cat1.getName() + " ");
+        cat1.run(150);
+        cat1.run(250);
+        cat1.swim(1);
+        System.out.println("\nКот " + cat2.getName() + " ");
+        cat2.run(100);
+        cat2.run(300);
+        cat2.swim(2);
+        Bowl bowl = new Bowl(15);
+        System.out.println("\nПоявилась миска с " + bowl.getFoodAmount() + " единицами еды");
+        Cat[] cats = new Cat[]{cat1, cat2};
+        System.out.println("\nПервое кормление (в миске 15 еды)");
+
+        for(Cat cat : cats) {
+            cat.eatFromBowl(bowl);
+        }
+
+        System.out.println("\nСостояние котов после первого кормления");
+
+        for(Cat cat : cats) {
+            PrintStream var10000 = System.out;
+            String var10001 = cat.getName();
+            var10000.println(var10001 + ": " + (cat.isHungry() ? "голоден" : "сыт"));
+        }
+
+        System.out.println("Еды в миске осталось: " + bowl.getFoodAmount());
+        System.out.println("\nДобавили еду");
+        bowl.addFood(20);
+
+        for(Cat cat : cats) {
+            if (cat.isHungry()) {
+                cat.eatFromBowl(bowl);
+            }
+        }
+
+        System.out.println("\nСытость котиков: ");
+
+        for(Cat cat : cats) {
+            PrintStream var28 = System.out;
+            String var30 = cat.getName();
+            var28.println(var30 + ": " + (cat.isHungry() ? "голоден" : "сыт"));
+        }
+
+        System.out.println("Еды в миске осталось: " + bowl.getFoodAmount());
+        System.out.println("\nВсего животных: " + Animal.getAnimalCount());
+        System.out.println("Собак: " + Dog.getDogCount());
+        System.out.println("Котов: " + Cat.getCatCount());
+
+        try {
+            Circle circle = new Circle((double)5.0F, "Фиолетовый", "Черный");
+            Rectangle rectangle = new Rectangle((double)4.0F, (double)6.0F, "Синий", "Белый");
+            Triangle triangle = new Triangle((double)3.0F, (double)4.0F, (double)5.0F, "Зеленый", "красный");
+            System.out.println("\n1. Круг:");
+            circle.printInfo();
+            PrintStream var29 = System.out;
+            Object[] var10002 = new Object[]{circle.getDiameter()};
+            var29.println("Диаметр круга: " + String.format("%.2f", var10002));
+            System.out.println("\n2. Прямоугольник:");
+            rectangle.printInfo();
+            System.out.println("\n3. ТРЕУГОЛЬНИК:");
+            triangle.printInfo();
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        }
+
+        GeometricShape[] shapes = new GeometricShape[]{new Circle((double)8.0F, "Белый", "Черный"), new Rectangle((double)3.0F, (double)4.0F, "Голубой", "Зеленый"), new Triangle((double)5.0F, (double)7.0F, (double)7.0F, "Красный", "Серый")};
+        System.out.println("\nИнтерфейс:");
+
+        for(int i = 0; i < shapes.length; ++i) {
+            System.out.println("\nФигура #" + (i + 1) + ":");
+            shapes[i].printInfo();
+        }
+
+    }
+}
