@@ -72,7 +72,7 @@ public class Lesson_4 {
             System.out.println("\n2. Прямоугольник:");
             rectangle.printInfo();
 
-            System.out.println("\n3. ТРЕУГОЛЬНИК:");
+            System.out.println("\n3. Треугольник:");
             triangle.printInfo();
 
         } catch (IllegalArgumentException e) {
