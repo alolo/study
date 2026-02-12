@@ -31,25 +31,24 @@ public class Lesson_6_2 {
     public static void main(String[] args) {
         SimplePhoneDirectory phoneBook = new SimplePhoneDirectory();
 
-        phoneBook.add("Сусликов", "+7-911-123-45-67");
-        phoneBook.add("Сусликов", "+7-911-234-56-78");
-        phoneBook.add("Сусликов", "+7-911-345-67-89");
+        phoneBook.add("Сусликов", "+7(916)-382-74-91");
+        phoneBook.add("Сусликов", "+7(495)-637-28-54");
+        phoneBook.add("Сусликов", "+7(965)-241-86-37");
 
-        phoneBook.add("Афоничкин", "+7-922-111-22-33");
-        phoneBook.add("Афоничкин", "+7-922-444-55-66");
+        phoneBook.add("Афоничкин", "+7(926)-573-49-12");
+        phoneBook.add("Афоничкин", "+7(812)-349-67-85");
 
-        phoneBook.add("Василькова", "+7-933-777-88-99");
-        phoneBook.add("Василькова", "+7-933-999-00-11");
+        phoneBook.add("Василькова", "+7(903)-514-26-73");
+        phoneBook.add("Василькова", "+7(911)-728-43-96");
 
-        phoneBook.add("Юдина", "+7-944-555-66-77");
+        phoneBook.add("Юдина", "+7(499)-856-31-49");
 
-        phoneBook.add("Васильев", "+7-955-111-22-33");
-        phoneBook.add("Васильев", "+7-955-444-55-66");
-        phoneBook.add("Васильев", "+7-955-777-88-99");
+        phoneBook.add("Васильев", "+7(985)-267-94-18");
+        phoneBook.add("Васильев", "+7(343)-576-82-31");
+        phoneBook.add("Васильев", "+7(962)-418-73-65");
 
         //Дубликат
-        phoneBook.add("Сусликов", "+7-911-123-45-67");
-        System.out.println("Попытка добавить дубликат для Сусликова");
+        phoneBook.add("Сусликов", "+7(916)-382-74-91");
 
         System.out.println("\nСправочник:");
         phoneBook.printAll();
