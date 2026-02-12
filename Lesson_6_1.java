@@ -93,29 +93,22 @@ class StudentManager {
     static class SimplePhoneDirectory {
         private Map<String, List<String>> directory = new HashMap<>();
 
-        // Добавление записи
         public void add(String surname, String phoneNumber) {
-            // Если фамилия уже есть, добавляем к существующему списку
             if (directory.containsKey(surname)) {
                 List<String> phones = directory.get(surname);
-                if (!phones.contains(phoneNumber)) { // избегаем дубликатов
+                if (!phones.contains(phoneNumber)) {
                     phones.add(phoneNumber);
                 }
             } else {
-                // Создаём новый список и добавляем номер
                 List<String> phones = new ArrayList<>();
                 phones.add(phoneNumber);
                 directory.put(surname, phones);
             }
         }
 
-        // Получение списка номеров по фамилии
         public List<String> get(String surname) {
-            // Возвращаем список номеров или пустой список, если фамилии нет
             return directory.getOrDefault(surname, new ArrayList<>());
         }
-
-        // Для удобства: вывод всех записей
         public void printAll() {
             for (Map.Entry<String, List<String>> entry : directory.entrySet()) {
                 System.out.println(entry.getKey() + ": " + entry.getValue());
