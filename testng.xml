@@ -2,7 +2,10 @@
 <suite name="Suite">
     <test name="Test">
         <classes>
-            <class name="org.example.AppTest"/>
+            <class name="org.example.CalculatorTest"/>
+            <class name="org.example.FactorialTest"/>
+            <class name="org.example.IntCompareTest"/>
+            <class name="org.example.TriangleAreaTest"/>
         </classes>
     </test>
 </suite>

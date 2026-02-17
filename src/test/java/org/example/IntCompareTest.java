@@ -20,6 +20,6 @@ public class IntCompareTest {
     @Test
     public void compare_greater() {
         IntCompare cmp = new IntCompare();
-        Assert.assertEquals(cmp.compare(999, 1000), 1);
+        Assert.assertEquals(cmp.compare(1001, 1000), 1);
     }
 }
