@@ -12,10 +12,10 @@ public class PaymentIframePage extends BasePage {
 
     private final By paymentFrame = By.xpath("//iframe[contains(@class,'payment-widget-iframe') or contains(@src,'bepaid.by')]");
 
-    private final By sumInFrame = By.xpath("/html/body/app-root/div/div/div/app-payment-container/section/div/div/div[1]/div[1]/span");
-    private final By sumOnButton = By.xpath("/html/body/app-root/div/div/div/app-payment-container/section/div/app-card-page/div/div[1]/button/span");
+    private final By sumInFrame = By.xpath("//span[contains(text(), 'BYN')]");
+    private final By sumOnButton = By.xpath("//button[.//span[contains(text(), 'Оплатить')]]");
 
-    private final By serviceAndPhone = By.xpath("/html/body/app-root/div/div/div/app-payment-container/section/div/div/div[2]/span");
+    private final By serviceAndPhone = By.xpath("//span[contains(text(), 'Оплата: Услуги связи') and contains(text(), '375297777777')]");
 
     private final By ccNumber = By.xpath("//*[@id='cc-number']");
 
