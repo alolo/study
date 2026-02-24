@@ -70,7 +70,6 @@ public abstract class BasePage {
             el.click();
             shortWait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
         } catch (TimeoutException ignored) {
-            // элемента нет или не успели — это ок
         }
     }
 }

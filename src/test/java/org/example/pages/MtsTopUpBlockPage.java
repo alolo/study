@@ -26,21 +26,18 @@ public class MtsTopUpBlockPage extends BasePage {
 
     public MtsTopUpBlockPage selectPaymentType(String typeText) {
 
-        // Кнопка "шапка" селекта
         By dropdownHeader = By.xpath(
                 "//*[@id='pay-section']//div[contains(@class,'select__wrapper')]//button[contains(@class,'select__header')]"
         );
 
         click(dropdownHeader);
 
-        // Сам список
         By dropdownList = By.xpath(
                 "//*[@id='pay-section']//div[contains(@class,'select__wrapper')]//ul[contains(@class,'select__list')]"
         );
 
         waitVisible(dropdownList);
 
-        // ВАЖНО: выбираем li по тексту внутри p.select__option
         By optionLi = By.xpath(
                 "//*[@id='pay-section']//div[contains(@class,'select__wrapper')]//ul[contains(@class,'select__list')]"
                         + "//li[.//p[contains(@class,'select__option') and normalize-space(.)='" + typeText + "']]"
@@ -48,17 +45,14 @@ public class MtsTopUpBlockPage extends BasePage {
 
         WebElement li = waitVisible(optionLi);
 
-        // Скроллим, чтобы элемент был в зоне клика
         scrollIntoView(li);
 
-        // Пытаемся обычный click, если перехват — JS click
         try {
             wait.until(ExpectedConditions.elementToBeClickable(li)).click();
         } catch (ElementClickInterceptedException e) {
             jsClick(li);
         }
 
-        // Ждём, что выбранное значение реально поменялось
         By selectedNow = By.xpath(
                 "//*[@id='pay-section']//div[contains(@class,'select__wrapper')]//span[contains(@class,'select__now')]"
         );
@@ -71,7 +65,6 @@ public class MtsTopUpBlockPage extends BasePage {
         type(By.id("connection-phone"), phone);
         type(By.id("connection-sum"), sum);
 
-        // email в "Услуги связи" необязательное, но в задании про плейсхолдер — мы проверяем его тоже
         type(By.id("connection-email"), email);
 
         return this;
@@ -82,10 +75,6 @@ public class MtsTopUpBlockPage extends BasePage {
         return this;
     }
 
-    /**
-     * Проверка плейсхолдеров для каждого типа оплаты.
-     * Здесь всё в одном месте (не надо 4 отдельных PageObject).
-     */
     public void assertPlaceholdersFor(String paymentType) {
         selectPaymentType(paymentType);
 
@@ -136,7 +125,6 @@ public class MtsTopUpBlockPage extends BasePage {
     }
 
     private void closeCookieIfPresent() {
-        // НИЧЕГО не ломаем: просто используем общий метод
         clickIfPresent(cookieAgree, 3);
     }
 }
