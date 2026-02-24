@@ -132,6 +132,15 @@ public class MtsReplenishmentTests {
                 )
         );
 
+        WebElement emailInput = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.xpath("//*[@id=\"connection-email\"]")
+                )
+        );
+
+        emailInput.clear();
+        emailInput.sendKeys("what@gmail.com");
+
         continueButton.click();
 
         By paymentFrame = By.xpath("//iframe[contains(@class,'payment-widget-iframe')]");
