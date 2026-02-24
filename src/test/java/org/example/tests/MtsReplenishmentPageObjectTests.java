@@ -41,7 +41,7 @@ public class MtsReplenishmentPageObjectTests {
     void shouldCheckConnectionPaymentFlowAndIframeData() {
         String phone = "297777777";
         String sum = "10";
-        String email ="what@gmail.com";
+        String email = "what@gmail.com";
 
         MtsTopUpBlockPage page = new MtsTopUpBlockPage(driver).open();
 

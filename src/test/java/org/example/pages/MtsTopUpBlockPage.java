@@ -2,29 +2,19 @@ package org.example.pages;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MtsTopUpBlockPage {
-
-    private final WebDriver driver;
-    private final WebDriverWait wait;
+public class MtsTopUpBlockPage extends BasePage {
 
     private final By blockRoot = By.xpath("//*[@id='pay-section']/div/div/div[2]/section/div");
-
-    private final By selectHeader = By.xpath("//*[@id='pay-section']//button[contains(@class,'select__header')]");
-    private final By selectNowText = By.xpath("//*[@id='pay-section']//span[contains(@class,'select__now')]");
 
     private final By cookieAgree = By.xpath("//*[@id='cookie-agree']");
 
     private final By continueButtonConnection = By.xpath("//*[@id='pay-connection']/button");
 
     public MtsTopUpBlockPage(WebDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        super(driver);
     }
 
     public MtsTopUpBlockPage open() {
@@ -36,33 +26,39 @@ public class MtsTopUpBlockPage {
 
     public MtsTopUpBlockPage selectPaymentType(String typeText) {
 
+        // Кнопка "шапка" селекта
         By dropdownHeader = By.xpath(
                 "//*[@id='pay-section']//div[contains(@class,'select__wrapper')]//button[contains(@class,'select__header')]"
         );
 
-        WebElement header = wait.until(ExpectedConditions.elementToBeClickable(dropdownHeader));
-        header.click();
+        click(dropdownHeader);
 
+        // Сам список
         By dropdownList = By.xpath(
                 "//*[@id='pay-section']//div[contains(@class,'select__wrapper')]//ul[contains(@class,'select__list')]"
         );
-        WebElement list = wait.until(ExpectedConditions.visibilityOfElementLocated(dropdownList));
 
+        waitVisible(dropdownList);
+
+        // ВАЖНО: выбираем li по тексту внутри p.select__option
         By optionLi = By.xpath(
                 "//*[@id='pay-section']//div[contains(@class,'select__wrapper')]//ul[contains(@class,'select__list')]"
                         + "//li[.//p[contains(@class,'select__option') and normalize-space(.)='" + typeText + "']]"
         );
 
-        WebElement li = wait.until(ExpectedConditions.visibilityOfElementLocated(optionLi));
+        WebElement li = waitVisible(optionLi);
 
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", li);
+        // Скроллим, чтобы элемент был в зоне клика
+        scrollIntoView(li);
 
+        // Пытаемся обычный click, если перехват — JS click
         try {
             wait.until(ExpectedConditions.elementToBeClickable(li)).click();
         } catch (ElementClickInterceptedException e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", li);
+            jsClick(li);
         }
 
+        // Ждём, что выбранное значение реально поменялось
         By selectedNow = By.xpath(
                 "//*[@id='pay-section']//div[contains(@class,'select__wrapper')]//span[contains(@class,'select__now')]"
         );
@@ -72,26 +68,24 @@ public class MtsTopUpBlockPage {
     }
 
     public MtsTopUpBlockPage fillConnectionForm(String phone, String sum, String email) {
-        WebElement phoneEl = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("connection-phone")));
-        phoneEl.clear();
-        phoneEl.sendKeys(phone);
+        type(By.id("connection-phone"), phone);
+        type(By.id("connection-sum"), sum);
 
-        WebElement sumEl = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("connection-sum")));
-        sumEl.clear();
-        sumEl.sendKeys(sum);
-
-        WebElement emailEl = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("connection-email")));
-        emailEl.clear();
-        emailEl.sendKeys(email);
+        // email в "Услуги связи" необязательное, но в задании про плейсхолдер — мы проверяем его тоже
+        type(By.id("connection-email"), email);
 
         return this;
     }
 
     public MtsTopUpBlockPage clickContinueForConnection() {
-        wait.until(ExpectedConditions.elementToBeClickable(continueButtonConnection)).click();
+        click(continueButtonConnection);
         return this;
     }
 
+    /**
+     * Проверка плейсхолдеров для каждого типа оплаты.
+     * Здесь всё в одном месте (не надо 4 отдельных PageObject).
+     */
     public void assertPlaceholdersFor(String paymentType) {
         selectPaymentType(paymentType);
 
@@ -137,19 +131,12 @@ public class MtsTopUpBlockPage {
         }
     }
 
-
     private String getPlaceholder(By locator) {
-        WebElement el = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-        return el.getAttribute("placeholder");
+        return getAttr(locator, "placeholder");
     }
 
     private void closeCookieIfPresent() {
-        try {
-            WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(3));
-            WebElement btn = shortWait.until(ExpectedConditions.elementToBeClickable(cookieAgree));
-            btn.click();
-            shortWait.until(ExpectedConditions.invisibilityOfElementLocated(cookieAgree));
-        } catch (TimeoutException ignored) {
-        }
+        // НИЧЕГО не ломаем: просто используем общий метод
+        clickIfPresent(cookieAgree, 3);
     }
 }
