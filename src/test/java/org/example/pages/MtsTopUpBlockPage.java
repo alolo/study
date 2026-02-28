@@ -4,14 +4,26 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MtsTopUpBlockPage extends BasePage {
 
     private final By blockRoot = By.xpath("//*[@id='pay-section']/div/div/div[2]/section/div");
+    private final By blockTitle = By.xpath("//div[@class='pay__wrapper']//h2[normalize-space()='Онлайн пополнение без комиссии']");
 
     private final By cookieAgree = By.xpath("//*[@id='cookie-agree']");
 
     private final By continueButtonConnection = By.xpath("//*[@id='pay-connection']/button");
+
+    // Логотипы платежных систем в основном блоке
+    private final By visaLogo = By.xpath("//img[@alt='Visa']");
+    private final By verifiedByVisaLogo = By.xpath("//img[@alt='Verified By Visa']");
+    private final By mastercardLogo = By.xpath("//img[@alt='MasterCard']");
+    private final By mastercardSecureLogo = By.xpath("//img[@alt='MasterCard Secure Code']");
+    private final By belkartLogo = By.xpath("//img[@alt='Белкарт']");
+
+    // Ссылка "Подробнее о сервисе"
+    private final By detailsLink = By.xpath("//a[contains(@href, 'poryadok-oplaty')]");
 
     public MtsTopUpBlockPage(WebDriver driver) {
         super(driver);
@@ -64,15 +76,43 @@ public class MtsTopUpBlockPage extends BasePage {
     public MtsTopUpBlockPage fillConnectionForm(String phone, String sum, String email) {
         type(By.id("connection-phone"), phone);
         type(By.id("connection-sum"), sum);
-
         type(By.id("connection-email"), email);
-
         return this;
     }
 
     public MtsTopUpBlockPage clickContinueForConnection() {
         click(continueButtonConnection);
         return this;
+    }
+
+    public void assertBlockTitle() {
+        String actualTitle = getText(blockTitle).trim();
+        String expectedTitle = "Онлайн пополнение\nбез комиссии";
+
+        assertEquals(expectedTitle, actualTitle,
+                String.format("Текст заголовка не совпадает.%nОжидалось: '%s'%nФактически: '%s'",
+                        expectedTitle, actualTitle));
+
+        WebElement block = driver.findElement(By.xpath("//div[@class='pay__wrapper']"));
+        assertTrue(block.isDisplayed(), "Блок оплаты не отображается");
+    }
+
+    public void assertPaymentLogos() {
+        assertTrue(waitVisible(visaLogo).isDisplayed(), "Логотип Visa не найден");
+        assertTrue(waitVisible(verifiedByVisaLogo).isDisplayed(), "Логотип Verified By Visa не найден");
+        assertTrue(waitVisible(mastercardLogo).isDisplayed(), "Логотип MasterCard не найден");
+        assertTrue(waitVisible(mastercardSecureLogo).isDisplayed(), "Логотип MasterCard Secure Code не найден");
+        assertTrue(waitVisible(belkartLogo).isDisplayed(), "Логотип Белкарт не найден");
+    }
+
+    public void assertDetailsLinkWorks() {
+        String oldUrl = driver.getCurrentUrl();
+        click(detailsLink);
+
+        wait.until(driver -> !driver.getCurrentUrl().equals(oldUrl));
+
+        assertTrue(!driver.getCurrentUrl().equals(oldUrl),
+                "Ссылка 'Подробнее о сервисе' не сработала");
     }
 
     public void assertPlaceholdersFor(String paymentType) {
