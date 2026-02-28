@@ -41,18 +41,24 @@ public class MtsReplenishmentTests {
 
     @Test
     void checkBlockTitle() {
-
-        WebElement block = wait.until(
+        WebElement title = wait.until(
                 ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//*[@id=\"pay-section\"]/div/div/div[2]/section/div")
+                        By.xpath("//div[@class='pay__wrapper']//h2[normalize-space()='Онлайн пополнение без комиссии']")
                 )
         );
 
-        WebElement title = block.findElement(
-                By.xpath("//*[@id=\"pay-section\"]/div/div/div[2]/section/div/h2")
-        );
-
         assertTrue(title.isDisplayed(), "Заголовок блока не отображается");
+
+        String actualTitle = title.getText().trim();
+        String expectedTitle = "Онлайн пополнение\n" +
+                "без комиссии";
+
+        assertEquals(expectedTitle, actualTitle,
+                String.format("Текст заголовка не совпадает.%nОжидалось: '%s'%nФактически: '%s'",
+                        expectedTitle, actualTitle));
+
+        WebElement block = title.findElement(By.xpath("./.."));
+        assertTrue(block.isDisplayed(), "Блок оплаты не отображается");
     }
 
     @Test
@@ -60,23 +66,23 @@ public class MtsReplenishmentTests {
 
         WebElement block = wait.until(
                 ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//*[@id=\"pay-section\"]/div/div/div[2]/section/div/div[2]/ul")
+                        By.xpath("//div[@class='pay__wrapper']")
                 )
         );
 
-        checkLogo(block, "//*[@id=\"pay-section\"]/div/div/div[2]/section/div/div[2]/ul/li[1]/img",
+        checkLogo(block, "//img[@alt='Visa']",
                 "Логотип Visa не найден");
 
-        checkLogo(block, "//*[@id=\"pay-section\"]/div/div/div[2]/section/div/div[2]/ul/li[2]/img",
+        checkLogo(block, "//img[@alt='Verified By Visa']",
                 "Логотип Verified By Visa не найден");
 
-        checkLogo(block, "//*[@id=\"pay-section\"]/div/div/div[2]/section/div/div[2]/ul/li[3]/img",
+        checkLogo(block, "//img[@alt='MasterCard']",
                 "Логотип MasterCard не найден");
 
-        checkLogo(block, "//*[@id=\"pay-section\"]/div/div/div[2]/section/div/div[2]/ul/li[4]/img",
+        checkLogo(block, "//img[@alt='MasterCard Secure Code']",
                 "Логотип MasterCard Secure Code не найден");
 
-        checkLogo(block, "//*[@id=\"pay-section\"]/div/div/div[2]/section/div/div[2]/ul/li[5]/img",
+        checkLogo(block, "//img[@alt='Белкарт']",
                 "Логотип Белкарт не найден");
     }
 
@@ -85,7 +91,7 @@ public class MtsReplenishmentTests {
 
         WebElement link = wait.until(
                 ExpectedConditions.elementToBeClickable(
-                        By.xpath("//*[@id=\"pay-section\"]/div/div/div[2]/section/div/a")
+                        By.xpath("//a[contains(@href, 'poryadok-oplaty')]")
                 )
         );
 
@@ -104,7 +110,7 @@ public class MtsReplenishmentTests {
 
         WebElement servicesTab = wait.until(
                 ExpectedConditions.elementToBeClickable(
-                        By.xpath("//*[@id=\"pay-section\"]/div/div/div[2]/section/div/div[1]/div[1]/div[2]/button")
+                        By.xpath("//form[@id='pay-connection']//button[text()='Продолжить']")
                 )
         );
         servicesTab.click();
